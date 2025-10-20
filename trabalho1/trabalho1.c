@@ -192,7 +192,6 @@ int q1(char data[])
  */
 DiasMesesAnos q2(char datainicial[], char datafinal[])
 {
-
     //calcule os dados e armazene nas três variáveis a seguir
     DiasMesesAnos dma;
 
@@ -203,15 +202,35 @@ DiasMesesAnos q2(char datainicial[], char datafinal[])
       dma.retorno = 3;
       return dma;
     }else{
+      DataQuebrada dq;
+
+      dq = quebraData(datainicial);
+
+      int iDiaInicio = dq.iDia;
+      int iMesInicio = dq.iMes;
+      int iAnoInicio = dq.iAno;
+
+      dq = quebraData(datafinal);
+
+      int iDiaFim = dq.iDia;
+      int iMesFim = dq.iMes;
+      int iAnoFim = dq.iAno;
+
       //verifique se a data final não é menor que a data inicial
-      
-      //calcule a distancia entre as datas
+      if(iAnoFim < iAnoInicio || (iAnoFim == iAnoInicio && iMesFim < iMesInicio) ||
+         (iAnoFim == iAnoInicio && iMesFim == iMesInicio && iDiaFim < iDiaInicio)){
+        dma.retorno = 4;
+        return dma;
+      }else{
+        //calcule a distancia entre as datas
+        dma.qtdDias = iDiaFim - iDiaInicio;
+        dma.qtdMeses = iMesFim - iMesInicio;
+        dma.qtdAnos =  iAnoFim - iAnoInicio;
 
-
-      //se tudo der certo
-      dma.retorno = 1;
-      return dma;
-      
+        //se tudo der certo
+        dma.retorno = 1;
+        return dma;
+      }
     }
     
 }
