@@ -89,14 +89,84 @@ int teste(int a)
     Não utilizar funções próprias de string (ex: strtok)   
     pode utilizar strlen para pegar o tamanho da string
  */
+#include <string.h>
+
 int q1(char data[])
 {
   int datavalida = 1;
 
-  //quebrar a string data em strings sDia, sMes, sAno
+  if(strlen(data) > 11)
+    return 0;
 
+  //quebrar a string data em strings sDia, sMes, sAno
+  char sDia[3], sMes[3], sAno[5];
+  int i, j;
+
+  for(i = 0; data[i] != '/'; i++){
+    sDia[i] = data[i];
+    if(i >= 2)
+      return 0;
+  }
+
+  sDia[i] = '\0';
+
+  for(i = i + 1, j = 0; data[i] != '/'; i++, j++){
+    sMes[j] = data[i];
+    if(i >= 5)
+      return 0;
+  }
+
+  sMes[j] = '\0';
+
+  for(i = i + 1, j = 0; data[i] != '\0'; i++, j++){
+    sAno[j] = data[i];
+    if(i >= 10)
+      return 0;
+  }
+
+  sAno[j] = '\0';
 
   //printf("%s\n", data);
+
+  if(strlen(sDia) == 0 || strlen(sMes) == 0 || strlen(sAno) == 0)
+    return 0;
+
+  for(i = 0; sDia[i] != '\0'; i++)
+    if(sDia[i] < '0' || sDia[i] > '9')
+      return 0;
+
+  for(i = 0; sMes[i] != '\0'; i++)
+    if(sMes[i] < '0' || sMes[i] > '9')
+      return 0;
+
+  for(i = 0; sAno[i] != '\0'; i++)
+    if(sAno[i] < '0' || sAno[i] > '9')
+      return 0;
+
+  int iDia, iMes, iAno;
+  int anoBissexto = 0;
+
+  iDia = atoi(sDia);
+  iMes = atoi(sMes);
+  iAno = atoi(sAno);
+
+  if(iAno < 1)
+    return 0;
+
+  if((iAno % 4) == 0 && ((iAno % 100) != 0 || (iAno % 400) == 0))
+    anoBissexto = 1;
+
+  if(iMes < 1 || iMes > 12)
+    datavalida = 0;
+  
+  if(iDia < 1 || iDia > 31)
+    datavalida = 0;
+  else if(iDia > 30 && (iMes == 4 || iMes == 6 || iMes == 9 || iMes == 11))
+    datavalida = 0;
+  else if(iDia > 29 && iMes == 2 && anoBissexto == 1)
+    datavalida = 0;
+  else if(iDia > 28 && iMes == 2 && anoBissexto == 0)
+    datavalida = 0;
 
   if (datavalida)
       return 1;
