@@ -250,7 +250,8 @@ int q3(char *texto, char c, int isCaseSensitive)
     int qtdOcorrencias = 0;
 
     if(isCaseSensitive == 1){
-      for(int i = 0; i < strlen(texto); i++)
+      int tam = strlen(texto);
+      for(int i = 0; i < tam; i++)
         if(texto[i] == c)
           qtdOcorrencias++;
     }else{
@@ -263,7 +264,8 @@ int q3(char *texto, char c, int isCaseSensitive)
         cMinusc = c - 'A' + 'a';
       }
 
-      for(int i = 0; i < strlen(texto); i++)
+      int tam = strlen(texto);
+      for(int i = 0; i < tam; i++)
         if(texto[i] == cMaiusc || texto[i] == cMinusc)
           qtdOcorrencias++;
     }
