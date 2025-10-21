@@ -247,8 +247,26 @@ DiasMesesAnos q2(char datainicial[], char datafinal[])
  */
 int q3(char *texto, char c, int isCaseSensitive)
 {
-    int qtdOcorrencias = -1;
+    int qtdOcorrencias = 0;
 
+    if(isCaseSensitive == 1){
+      for(int i = 0; i < strlen(texto); i++)
+        if(texto[i] == c)
+          qtdOcorrencias++;
+    }else{
+      char cMaiusc = c;
+      char cMinusc = c;
+
+      if(c >= 'a' && c <= 'z'){
+        cMaiusc = c - 'a' + 'A';
+      }else if(c >= 'A' && c <= 'Z'){
+        cMinusc = c - 'A' + 'a';
+      }
+
+      for(int i = 0; i < strlen(texto); i++)
+        if(texto[i] == cMaiusc || texto[i] == cMinusc)
+          qtdOcorrencias++;
+    }
     return qtdOcorrencias;
 }
 
