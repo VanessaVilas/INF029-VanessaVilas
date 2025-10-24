@@ -287,10 +287,48 @@ int q3(char *texto, char c, int isCaseSensitive)
         O retorno da função, n, nesse caso seria 1;
 
  */
+#include <locale.h>
+
+int contarCaracteresUTF8(const char *str, int bytes) {
+    int chars = 0;
+    int i = 0;
+    
+    while(i < bytes && str[i] != '\0') {
+        if((str[i] & 0xC0) != 0x80) {
+            chars++;
+        }
+        i++;
+    }
+    return chars;
+}
+
 int q4(char *strTexto, char *strBusca, int posicoes[30])
 {
-    int qtdOcorrencias = -1;
+    setlocale(LC_ALL, "Portuguese_Brazil.UTF-8");
 
+    int qtdOcorrencias = 0;
+
+    int i, j, k, pos = 0;
+    int tamTexto = strlen(strTexto);
+    int tamBusca = strlen(strBusca);
+
+    for(i = 0; i < tamTexto; i++){
+      for(j = i, k = 0; k < tamBusca && j < tamTexto && strTexto[j] == strBusca[k]; j++, k++);
+
+      if(k == tamBusca){
+        qtdOcorrencias++;
+        posicoes[pos] = contarCaracteresUTF8(strTexto, i) + 1;
+        pos++;
+        posicoes[pos] = contarCaracteresUTF8(strTexto, i + tamBusca);
+        pos++;
+        i += tamBusca - 1;
+      }
+
+      if((strTexto[i] & 0xC0) == 0xC0) {
+        while((strTexto[i] & 0xC0) == 0x80) i++;
+      }
+    }
+        
     return qtdOcorrencias;
 }
 
