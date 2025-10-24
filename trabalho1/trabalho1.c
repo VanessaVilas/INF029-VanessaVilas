@@ -344,6 +344,15 @@ int q4(char *strTexto, char *strBusca, int posicoes[30])
 
 int q5(int num)
 {
+    int numInvertido = 0;
+
+    while(num != 0){
+      numInvertido *= 10;
+      numInvertido += num % 10;
+      num /= 10;
+    }
+
+    num = numInvertido;
 
     return num;
 }
