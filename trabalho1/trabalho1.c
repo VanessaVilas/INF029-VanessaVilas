@@ -369,7 +369,23 @@ int q5(int num)
 
 int q6(int numerobase, int numerobusca)
 {
-    int qtdOcorrencias;
+    int qtdOcorrencias = 0;
+
+    int copiaBusca = numerobusca;
+    int divisor = 10;
+    
+    while(copiaBusca != 0){
+      divisor *= 10;
+      copiaBusca /= 10;
+    }
+    divisor /= 10;
+
+    while(numerobase != 0){
+      if((numerobase % divisor) == numerobusca)
+        qtdOcorrencias++;
+      numerobase /= 10;  
+    }
+
     return qtdOcorrencias;
 }
 
