@@ -373,7 +373,7 @@ int q6(int numerobase, int numerobusca)
 
     int copiaBusca = numerobusca;
     int divisor = 10;
-    
+
     while(copiaBusca != 0){
       divisor *= 10;
       copiaBusca /= 10;
@@ -399,9 +399,32 @@ int q6(int numerobase, int numerobusca)
     1 se achou 0 se não achou
  */
 
+ int olharAoRedor(char matriz[8][10], char palavra[5], int linha, int coluna, int letra){
+     int achou = 0;
+
+     for(int i = linha - 1; i <= linha + 1 && !achou; i++)
+      for(int j = coluna - 1; j <= coluna + 1 && !achou; j++)
+        if((i != linha || j != coluna) && i >= 0 && i < 8 && j >= 0 && j < 10){
+          if(palavra[letra + 1] == '\0' && matriz[i][j] == palavra[letra]){
+            achou = 1;
+          }else if(matriz[i][j] == palavra[letra]){
+            achou = olharAoRedor(matriz, palavra, i, j, letra + 1);
+          }
+        }
+
+     return achou;
+ }
+
  int q7(char matriz[8][10], char palavra[5])
  {
-     int achou;
+     int achou = 0;
+
+     for(int i = 0; i < 8 && !achou; i++)
+      for(int j = 0; j < 10 && !achou; j++)
+        if(matriz[i][j] == palavra[0]){
+          achou = olharAoRedor(matriz, palavra, i, j, 1);
+        }
+
      return achou;
  }
 

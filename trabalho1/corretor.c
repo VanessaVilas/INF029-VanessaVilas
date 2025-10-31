@@ -40,7 +40,7 @@ int main()
     //testQ4();
     //testQ5();
     testQ6();
-    //testQ7();
+    testQ7();
 }
 
 void testSomar()
