@@ -300,8 +300,8 @@ int q3(char *texto, char c, int isCaseSensitive)
 {
     int qtdOcorrencias = 0;
 
+    int tam = strlen(texto);
     if(isCaseSensitive == 1){
-      int tam = strlen(texto);
       for(int i = 0; i < tam; i++)
         if(texto[i] == c)
           qtdOcorrencias++;
@@ -315,7 +315,6 @@ int q3(char *texto, char c, int isCaseSensitive)
         cMinusc = c - 'A' + 'a';
       }
 
-      int tam = strlen(texto);
       for(int i = 0; i < tam; i++)
         if(texto[i] == cMaiusc || texto[i] == cMinusc)
           qtdOcorrencias++;
@@ -447,9 +446,134 @@ int q6(int numerobase, int numerobusca)
  @saida
     1 se achou 0 se não achou
  */
+int horizontalParaFrente(char matriz[8][10], char palavra[5], int linha, int coluna, int letra){
+  if (palavra[letra] == '\0')
+    return 1;
+  if(linha < 0 || linha >= 8 || coluna < 0 || coluna >= 10) 
+    return 0;
+  if (matriz[linha][coluna] != palavra[letra])
+    return 0;
+  
+  return horizontalParaFrente(matriz, palavra, linha, coluna + 1, letra + 1);
+}
+
+int horizontalParaTras(char matriz[8][10], char palavra[5], int linha, int coluna, int letra){
+  if (palavra[letra] == '\0')
+    return 1;
+  if(linha < 0 || linha >= 8 || coluna < 0 || coluna >= 10) 
+    return 0;
+  if (matriz[linha][coluna] != palavra[letra])
+    return 0;
+  
+  return horizontalParaTras(matriz, palavra, linha, coluna - 1, letra + 1);
+}
+
+int verticalParaCima(char matriz[8][10], char palavra[5], int linha, int coluna, int letra){
+  if (palavra[letra] == '\0')
+    return 1;
+  if(linha < 0 || linha >= 8 || coluna < 0 || coluna >= 10) 
+    return 0;
+  if (matriz[linha][coluna] != palavra[letra])
+    return 0;
+  
+  return verticalParaCima(matriz, palavra, linha - 1, coluna, letra + 1);
+}
+
+int verticalParaBaixo(char matriz[8][10], char palavra[5], int linha, int coluna, int letra){
+  if (palavra[letra] == '\0')
+    return 1;
+  if(linha < 0 || linha >= 8 || coluna < 0 || coluna >= 10) 
+    return 0;
+  if (matriz[linha][coluna] != palavra[letra])
+    return 0;
+  
+  return verticalParaBaixo(matriz, palavra, linha + 1, coluna, letra + 1);
+}
+
+int diagonalSuperiorEsquerda(char matriz[8][10], char palavra[5], int linha, int coluna, int letra){
+  if (palavra[letra] == '\0')
+    return 1;
+  if(linha < 0 || linha >= 8 || coluna < 0 || coluna >= 10) 
+    return 0;
+  if (matriz[linha][coluna] != palavra[letra])
+    return 0;
+  
+  return diagonalSuperiorEsquerda(matriz, palavra, linha - 1, coluna - 1, letra + 1);
+}
+
+int diagonalSuperiorDireita(char matriz[8][10], char palavra[5], int linha, int coluna, int letra){
+  if (palavra[letra] == '\0')
+    return 1;
+  if(linha < 0 || linha >= 8 || coluna < 0 || coluna >= 10) 
+    return 0;
+  if (matriz[linha][coluna] != palavra[letra])
+    return 0;
+  
+  return diagonalSuperiorDireita(matriz, palavra, linha - 1, coluna + 1, letra + 1);
+}
+
+int diagonalInferiorEsquerda(char matriz[8][10], char palavra[5], int linha, int coluna, int letra){
+  if (palavra[letra] == '\0')
+    return 1;
+  if(linha < 0 || linha >= 8 || coluna < 0 || coluna >= 10) 
+    return 0;
+  if (matriz[linha][coluna] != palavra[letra])
+    return 0;
+  
+  return diagonalInferiorEsquerda(matriz, palavra, linha + 1, coluna - 1, letra + 1);
+}
+
+int diagonalInferiorDireita(char matriz[8][10], char palavra[5], int linha, int coluna, int letra){
+  if (palavra[letra] == '\0')
+    return 1;
+  if(linha < 0 || linha >= 8 || coluna < 0 || coluna >= 10) 
+    return 0;
+  if (matriz[linha][coluna] != palavra[letra])
+    return 0;
+  
+  return diagonalInferiorDireita(matriz, palavra, linha + 1, coluna + 1, letra + 1);
+}
+
+int olharAoRedor(char matriz[8][10], char palavra[5], int linha, int coluna, int letra) {
+  int achou = 0;
+
+  for(int i = linha - 1; i <= linha + 1 && !achou; i++)
+    for(int j = coluna - 1; j <= coluna + 1 && !achou; j++)
+      if(i >= 0 && i < 8 && j >= 0 && j < 10 && (i != linha || j != coluna))
+        if(matriz[i][j] == palavra[letra]){
+          if(i == linha && j == coluna + 1)
+            achou = horizontalParaFrente(matriz, palavra, i, j + 1, letra + 1);
+          else if(i == linha && j == coluna - 1)
+            achou = horizontalParaTras(matriz, palavra, i, j - 1, letra + 1);
+
+          else if(i == linha - 1 && j == coluna)
+            achou = verticalParaCima(matriz, palavra, i - 1, j, letra + 1);
+          else if(i == linha + 1 && j == coluna)
+            achou = verticalParaBaixo(matriz, palavra, i + 1, j, letra + 1);
+            
+          else if(i == linha - 1 && j == coluna - 1)
+            achou = diagonalSuperiorEsquerda(matriz, palavra, i - 1, j - 1, letra + 1);
+          else if(i == linha - 1 && j == coluna + 1)
+            achou = diagonalSuperiorDireita(matriz, palavra, i - 1, j + 1, letra + 1);
+          else if(i == linha + 1 && j == coluna - 1)
+            achou = diagonalInferiorEsquerda(matriz, palavra, i + 1, j - 1, letra + 1);
+          else if(i == linha + 1 && j == coluna + 1)
+            achou = diagonalInferiorDireita(matriz, palavra, i + 1, j + 1, letra + 1);
+        }
+      
+  return achou;
+}
+
  int q7(char matriz[8][10], char palavra[5])
  {
-      int achou;
+      int achou = 0;
+
+      for(int i = 0; i < 8 && !achou; i++)
+        for(int j = 0; j < 10 && !achou; j++)
+          if(matriz[i][j] == palavra[0]){
+            achou = olharAoRedor(matriz, palavra, i, j, 1);
+          }
+
       return achou;
  }
 
