@@ -190,6 +190,19 @@ int q1(char data[])
     4 -> datainicial > datafinal
     Caso o cálculo esteja correto, os atributos qtdDias, qtdMeses e qtdAnos devem ser preenchidos com os valores correspondentes.
  */
+int diasNoMes(int mes, int ano) {
+  int anoBissexto = 0;
+  if((ano % 4) == 0 && ((ano % 100) != 0 || (ano % 400) == 0))
+    anoBissexto = 1;
+
+  if(mes == 2)
+    return (anoBissexto == 0) ? 28 : 29;
+  else if(mes == 4 || mes == 6 || mes == 9 || mes == 11)
+    return 30;
+  else
+    return 31;
+}
+
 DiasMesesAnos q2(char datainicial[], char datafinal[])
 {
     //calcule os dados e armazene nas três variáveis a seguir
@@ -223,16 +236,54 @@ DiasMesesAnos q2(char datainicial[], char datafinal[])
         return dma;
       }else{
         //calcule a distancia entre as datas
-        dma.qtdDias = iDiaFim - iDiaInicio;
-        dma.qtdMeses = iMesFim - iMesInicio;
-        dma.qtdAnos =  iAnoFim - iAnoInicio;
+        dma.qtdDias = 0;
+        dma.qtdMeses = 0;
+        dma.qtdAnos = 0;
+
+        for(int ano = iAnoInicio; ano <= iAnoFim; ano++){
+          int mesInicio = (ano == iAnoInicio) ? iMesInicio : 1;
+          int mesFim = (ano == iAnoFim) ? iMesFim : 12;
+
+          for(int mes = mesInicio; mes <= mesFim; mes++){
+            int qtdDiasNoMes = diasNoMes(mes, ano);
+
+            int qtdDias = 0;
+            if(mes == iMesInicio && ano == iAnoInicio)
+              dma.qtdDias += qtdDiasNoMes - iDiaInicio;
+            else if(mes == iMesFim && ano == iAnoFim)
+              dma.qtdDias += iDiaFim;
+            else
+              dma.qtdDias += qtdDiasNoMes;
+
+            int mesAnt = mes - 1;
+            int qtdDiasNoMesAnt;
+
+            if(mesAnt <= 0){
+              mesAnt = 12;
+              int anoAnt = ano - 1;
+              qtdDiasNoMesAnt = diasNoMes(mesAnt, anoAnt);
+            } else {
+              qtdDiasNoMesAnt = diasNoMes(mesAnt, ano);
+            }
+
+            if(dma.qtdDias >= qtdDiasNoMesAnt){
+              dma.qtdMeses++;
+              dma.qtdDias = dma.qtdDias - qtdDiasNoMesAnt;
+            }
+          }
+
+          if(dma.qtdMeses >= 12){
+            dma.qtdAnos++;
+            dma.qtdMeses -= 12;
+          }
+        }
 
         //se tudo der certo
         dma.retorno = 1;
         return dma;
       }
     }
-    
+   
 }
 
 /*
@@ -398,34 +449,10 @@ int q6(int numerobase, int numerobusca)
  @saida
     1 se achou 0 se não achou
  */
-
- int olharAoRedor(char matriz[8][10], char palavra[5], int linha, int coluna, int letra){
-     int achou = 0;
-
-     for(int i = linha - 1; i <= linha + 1 && !achou; i++)
-      for(int j = coluna - 1; j <= coluna + 1 && !achou; j++)
-        if((i != linha || j != coluna) && i >= 0 && i < 8 && j >= 0 && j < 10){
-          if(palavra[letra + 1] == '\0' && matriz[i][j] == palavra[letra]){
-            achou = 1;
-          }else if(matriz[i][j] == palavra[letra]){
-            achou = olharAoRedor(matriz, palavra, i, j, letra + 1);
-          }
-        }
-
-     return achou;
- }
-
  int q7(char matriz[8][10], char palavra[5])
  {
-     int achou = 0;
-
-     for(int i = 0; i < 8 && !achou; i++)
-      for(int j = 0; j < 10 && !achou; j++)
-        if(matriz[i][j] == palavra[0]){
-          achou = olharAoRedor(matriz, palavra, i, j, 1);
-        }
-
-     return achou;
+      int achou;
+      return achou;
  }
 
 
