@@ -415,17 +415,23 @@ int q6(int numerobase, int numerobusca)
     int qtdOcorrencias = 0;
 
     int copiaBusca = numerobusca;
+    int tamBusca = 0;
     int divisor = 10;
 
     while(copiaBusca != 0){
       divisor *= 10;
       copiaBusca /= 10;
+      tamBusca++;
     }
     divisor /= 10;
 
     while(numerobase != 0){
-      if((numerobase % divisor) == numerobusca)
+      if((numerobase % divisor) == numerobusca){
         qtdOcorrencias++;
+        for(int i = 1; i < tamBusca; i++)
+          numerobase /= 10;
+      }
+      
       numerobase /= 10;  
     }
 

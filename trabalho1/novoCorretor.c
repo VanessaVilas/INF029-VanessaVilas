@@ -20,11 +20,11 @@ int main(){
     //printf("q3\n");
     //testQ3(); // 13 testes
     //printf("q4\n");
-    testQ4(); // 22 testes
+    //testQ4(); // 22 testes
     //printf("q5\n");
     //testQ5(); // 10 testes
     //printf("q6\n");
-    //testQ6(); // 10 testes 
+    testQ6(); // 10 testes 
     //printf("q7\n");
     //testQ7();
     
