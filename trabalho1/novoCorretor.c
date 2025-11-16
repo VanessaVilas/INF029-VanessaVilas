@@ -11,24 +11,31 @@ void testQ4();
 void testQ5();
 void testQ6();
 void testQ7();
+void testQ8();
 
 int main(){
     //printf("q1\n");
-    testQ1(); // 10 testes
+    //testQ1(); // 10 testes
     //printf("q2\n");
-    testQ2(); // 35 testes
+    //testQ2(); // 35 testes
     //printf("q3\n");
-    testQ3(); // 13 testes
+    //testQ3(); // 13 testes
     //printf("q4\n");
-    testQ4(); // 22 testes
+    //testQ4(); // 22 testes
     //printf("q5\n");
-    testQ5(); // 10 testes
+    //testQ5(); // 10 testes
     //printf("q6\n");
-    testQ6(); // 10 testes 
+    //testQ6(); // 10 testes 
     //printf("q7\n");
-    testQ7();
+    //testQ7();
     
-    
+    //Questões Extras
+    char jogoDaVelha[3][3];
+    for(int i = 0; i < 3; i++)
+        for(int j = 0; j < 3; j++)
+            jogoDaVelha[i][j] = ' ';
+
+    testQ8();
 }
 
 int ligado = 0;
@@ -342,4 +349,9 @@ void testQ7()
     strcpy(stringBusca, "DBQMV");
     printf("%d\n", q7(matrix, stringBusca) == 0);
 
+}
+
+void testQ8()
+{
+    q8();
 }
