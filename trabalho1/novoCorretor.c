@@ -11,7 +11,6 @@ void testQ4();
 void testQ5();
 void testQ6();
 void testQ7();
-void testQ8();
 
 int main(){
     //printf("q1\n");
@@ -28,9 +27,6 @@ int main(){
     testQ6(); // 10 testes 
     //printf("q7\n");
     testQ7();
-    
-    //Questões Extras
-    testQ8();
 }
 
 int ligado = 0;
@@ -344,9 +340,4 @@ void testQ7()
     strcpy(stringBusca, "DBQMV");
     printf("%d\n", q7(matrix, stringBusca) == 0);
 
-}
-
-void testQ8()
-{
-    q8();
 }
