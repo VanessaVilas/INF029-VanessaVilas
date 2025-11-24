@@ -1,7 +1,4 @@
 #include<stdio.h>
-#include<string.h>
-
-#include "trabalho1.h"
 
 void q8();
 
