@@ -4,7 +4,7 @@
 
 #include "trabalho2.h"
 
-int vetorPrincipal[TAM];
+int *vetorPrincipal[TAM] = {NULL};
 
 /*
 Objetivo: criar estrutura auxiliar na posição 'posicao'.
@@ -19,18 +19,33 @@ Rertono (int)
 */
 int criarEstruturaAuxiliar(int posicao, int tamanho)
 {
+    posicao--;
 
     int retorno = 0;
-    // a posicao pode já existir estrutura auxiliar
-    retorno = JA_TEM_ESTRUTURA_AUXILIAR;
-    // se posição é um valor válido {entre 1 e 10}
-    retorno = POSICAO_INVALIDA;
-    // o tamanho ser muito grande
-    retorno = SEM_ESPACO_DE_MEMORIA;
-    // o tamanho nao pode ser menor que 1
-    retorno = TAMANHO_INVALIDO;
-    // deu tudo certo, crie
-    retorno = SUCESSO;
+    if(posicao < 0 || posicao > 9){
+        // se posição é um valor válido {entre 1 e 10}
+        retorno = POSICAO_INVALIDA;
+    }else if(tamanho < 1){
+        // o tamanho nao pode ser menor que 1
+        retorno = TAMANHO_INVALIDO;
+    }else{
+        if(vetorPrincipal[posicao] != NULL){
+            // a posicao pode já existir estrutura auxiliar
+            retorno = JA_TEM_ESTRUTURA_AUXILIAR;
+        }else{
+            int *vetorNovo = malloc(tamanho * sizeof(int));
+            
+            if(vetorNovo == NULL){
+                // o tamanho ser muito grande
+                retorno = SEM_ESPACO_DE_MEMORIA;
+            }else{
+                vetorPrincipal[posicao] = vetorNovo;
+
+                // deu tudo certo, crie
+                retorno = SUCESSO;
+            }
+        }
+    }
 
     return retorno;
 }
