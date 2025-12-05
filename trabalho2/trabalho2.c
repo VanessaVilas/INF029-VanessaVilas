@@ -4,7 +4,14 @@
 
 #include "trabalho2.h"
 
-int *vetorPrincipal[TAM] = {NULL};
+No *vetorPrincipal[TAM] = {NULL};
+
+typedef struct VetorAux {
+    int *vetor;
+    int tamanho;
+    int qtdElem;
+} VetorAux;
+
 
 /*
 Objetivo: criar estrutura auxiliar na posição 'posicao'.
@@ -19,27 +26,30 @@ Rertono (int)
 */
 int criarEstruturaAuxiliar(int posicao, int tamanho)
 {
-    posicao--;
-
     int retorno = 0;
-    if(posicao < 0 || posicao > 9){
+    if(posicao < 1 || posicao > TAM){
         // se posição é um valor válido {entre 1 e 10}
         retorno = POSICAO_INVALIDA;
     }else if(tamanho < 1){
         // o tamanho nao pode ser menor que 1
         retorno = TAMANHO_INVALIDO;
     }else{
-        if(vetorPrincipal[posicao] != NULL){
+        if(vetorPrincipal[posicao - 1] != NULL){
             // a posicao pode já existir estrutura auxiliar
             retorno = JA_TEM_ESTRUTURA_AUXILIAR;
         }else{
-            int *vetorNovo = malloc(tamanho * sizeof(int));
+            VetorAux *novoVetor = malloc(sizeof(VetorAux));
+            int *vetorAux = malloc(tamanho * sizeof(int));
             
-            if(vetorNovo == NULL){
+            if(novoVetor == NULL || vetorAux == NULL){
                 // o tamanho ser muito grande
                 retorno = SEM_ESPACO_DE_MEMORIA;
             }else{
-                vetorPrincipal[posicao] = vetorNovo;
+                novoVetor->vetor = vetorAux;
+                novoVetor->tamanho = tamanho;
+                novoVetor->qtdElem = 0;
+
+                vetorPrincipal[posicao - 1] = (No*) novoVetor;
 
                 // deu tudo certo, crie
                 retorno = SUCESSO;
@@ -66,16 +76,30 @@ int inserirNumeroEmEstrutura(int posicao, int valor)
     int temEspaco = 0;
     int posicao_invalida = 0;
 
+    if(posicao < 1 || posicao > TAM)
+        posicao_invalida = 1;
+
     if (posicao_invalida)
         retorno = POSICAO_INVALIDA;
     else
     {
         // testar se existe a estrutura auxiliar
+        if(vetorPrincipal[posicao - 1] != NULL)
+            existeEstruturaAuxiliar = 1;
+
         if (existeEstruturaAuxiliar)
         {
+            VetorAux *vetorAux = (VetorAux*) vetorPrincipal[posicao - 1];
+
+            if(vetorAux->qtdElem < vetorAux->tamanho)
+                temEspaco = 1;
+
             if (temEspaco)
             {
                 //insere
+                vetorAux->vetor[vetorAux->qtdElem] = valor;
+                vetorAux->qtdElem++;
+
                 retorno = SUCESSO;
             }
             else

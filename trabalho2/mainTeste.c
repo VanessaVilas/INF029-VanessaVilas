@@ -18,9 +18,9 @@ void testeListaEncadeada();
 int main()
 {
     //inicializar();
-    //testeInserirSemNada();
+    testeInserirSemNada();
     testeCriarEstrutura();
-    //testeInserirComEstrutura();
+    testeInserirComEstrutura();
     //testeExcluir();
     //testeExcluirNumeroEspecifico();
     //testeListar();
@@ -29,7 +29,7 @@ int main()
     //testeListaEncadeada();*/
     //finalizar();
 }
-int ligado = 0;
+int ligado = 1;
 void show_log(char *str)
 {
     if (ligado)
