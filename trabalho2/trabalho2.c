@@ -380,6 +380,37 @@ int modificarTamanhoEstruturaAuxiliar(int posicao, int novoTamanho)
 {
 
     int retorno = 0;
+
+    retorno = ehPosicaoValida(posicao);
+
+    if(retorno != POSICAO_INVALIDA){
+        VetorAux *aux = &vetorPrincipal[posicao - 1];
+
+        if(aux->vetor == NULL)
+            retorno = SEM_ESTRUTURA_AUXILIAR;
+        else{
+            int tamanho = aux->tamanho + novoTamanho;
+
+            if(tamanho < 1)
+                retorno = NOVO_TAMANHO_INVALIDO;
+            else{
+                int *temp = realloc(aux->vetor, tamanho * sizeof(int));
+
+                if(temp == NULL)
+                    retorno = SEM_ESPACO_DE_MEMORIA;
+                else{
+                    aux->vetor = temp;
+                    aux->tamanho = tamanho;
+
+                    if(novoTamanho < 0)
+                        aux->qtdElem += novoTamanho;
+
+                    retorno = SUCESSO;
+                }
+            }
+        }
+    }
+
     return retorno;
 }
 
@@ -394,8 +425,20 @@ Retorno (int)
 */
 int getQuantidadeElementosEstruturaAuxiliar(int posicao)
 {
-
     int retorno = 0;
+
+    retorno = ehPosicaoValida(posicao);
+
+    if(retorno != POSICAO_INVALIDA){
+        if(vetorPrincipal[posicao - 1].vetor == NULL)
+            retorno = SEM_ESTRUTURA_AUXILIAR;
+        else{
+            if(vetorPrincipal[posicao - 1].qtdElem < 1)
+                retorno = ESTRUTURA_AUXILIAR_VAZIA;
+            else
+                retorno = vetorPrincipal[posicao - 1].qtdElem;
+        }
+    }
 
     return retorno;
 }
