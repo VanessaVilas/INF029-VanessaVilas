@@ -4,14 +4,13 @@
 
 #include "trabalho2.h"
 
-No *vetorPrincipal[TAM] = {NULL};
-
 typedef struct VetorAux {
     int *vetor;
     int tamanho;
     int qtdElem;
 } VetorAux;
 
+VetorAux vetorPrincipal[TAM] = {0};
 
 /*
 Objetivo: criar estrutura auxiliar na posição 'posicao'.
@@ -34,22 +33,20 @@ int criarEstruturaAuxiliar(int posicao, int tamanho)
         // o tamanho nao pode ser menor que 1
         retorno = TAMANHO_INVALIDO;
     }else{
-        if(vetorPrincipal[posicao - 1] != NULL){
+        posicao--;
+
+        if(vetorPrincipal[posicao].vetor != NULL){
             // a posicao pode já existir estrutura auxiliar
             retorno = JA_TEM_ESTRUTURA_AUXILIAR;
         }else{
-            VetorAux *novoVetor = malloc(sizeof(VetorAux));
             int *vetorAux = malloc(tamanho * sizeof(int));
             
-            if(novoVetor == NULL || vetorAux == NULL){
+            if(vetorAux == NULL){
                 // o tamanho ser muito grande
                 retorno = SEM_ESPACO_DE_MEMORIA;
             }else{
-                novoVetor->vetor = vetorAux;
-                novoVetor->tamanho = tamanho;
-                novoVetor->qtdElem = 0;
-
-                vetorPrincipal[posicao - 1] = (No*) novoVetor;
+                vetorPrincipal[posicao].vetor = vetorAux;
+                vetorPrincipal[posicao].tamanho = tamanho;
 
                 // deu tudo certo, crie
                 retorno = SUCESSO;
@@ -83,22 +80,22 @@ int inserirNumeroEmEstrutura(int posicao, int valor)
         retorno = POSICAO_INVALIDA;
     else
     {
+        VetorAux *aux = &vetorPrincipal[posicao - 1];
+
         // testar se existe a estrutura auxiliar
-        if(vetorPrincipal[posicao - 1] != NULL)
+        if(aux->vetor != NULL)
             existeEstruturaAuxiliar = 1;
 
         if (existeEstruturaAuxiliar)
         {
-            VetorAux *vetorAux = (VetorAux*) vetorPrincipal[posicao - 1];
-
-            if(vetorAux->qtdElem < vetorAux->tamanho)
+            if(aux->qtdElem < aux->tamanho)
                 temEspaco = 1;
 
             if (temEspaco)
             {
                 //insere
-                vetorAux->vetor[vetorAux->qtdElem] = valor;
-                vetorAux->qtdElem++;
+                aux->vetor[aux->qtdElem] = valor;
+                aux->qtdElem++;
 
                 retorno = SUCESSO;
             }
@@ -130,6 +127,22 @@ Rertono (int)
 int excluirNumeroDoFinaldaEstrutura(int posicao)
 {
     int retorno = SUCESSO;
+
+    if(posicao < 1 || posicao > TAM)
+        retorno = POSICAO_INVALIDA;
+    else{
+        posicao--;
+
+        if(vetorPrincipal[posicao].vetor == NULL)
+            retorno = SEM_ESTRUTURA_AUXILIAR;
+        else{
+            if(vetorPrincipal[posicao].qtdElem == 0)
+                retorno = ESTRUTURA_AUXILIAR_VAZIA;
+            else
+                vetorPrincipal[posicao].qtdElem--;
+        }
+    }
+
     return retorno;
 }
 
@@ -149,6 +162,40 @@ Rertono (int)
 int excluirNumeroEspecificoDeEstrutura(int posicao, int valor)
 {
     int retorno = SUCESSO;
+
+    if(posicao < 1 || posicao > TAM)
+        retorno = POSICAO_INVALIDA;
+    else{
+        VetorAux *aux = &vetorPrincipal[posicao - 1];
+
+        if(aux->vetor == NULL)
+            retorno = SEM_ESTRUTURA_AUXILIAR;
+        else{
+            if(aux->qtdElem == 0)
+                retorno = ESTRUTURA_AUXILIAR_VAZIA;
+            else{
+                int achou = -1;
+
+                for(int i = 0; i < aux->tamanho; i++)
+                    if(aux->vetor[i] == valor)
+                        achou = i;
+                
+                if(achou == -1)
+                    retorno = NUMERO_INEXISTENTE;
+                else{
+                    int j = achou + 1;
+
+                    for(int i = achou; i < (aux->qtdElem - 1); i++){
+                        aux->vetor[i] = aux->vetor[j];
+                        j++;
+                    }
+
+                    aux->qtdElem--;
+                }
+            }
+        }
+    }
+
     return retorno;
 }
 
@@ -176,8 +223,21 @@ Retorno (int)
 */
 int getDadosEstruturaAuxiliar(int posicao, int vetorAux[])
 {
-
     int retorno = 0;
+    retorno = ehPosicaoValida(posicao);
+
+    if(retorno != POSICAO_INVALIDA){
+        VetorAux *aux = &vetorPrincipal[posicao - 1];
+
+        if(aux->vetor == NULL)
+            retorno = SEM_ESTRUTURA_AUXILIAR;
+        else{
+            for(int i = 0; i < aux->qtdElem; i++)
+                vetorAux[i] = aux->vetor[i];
+
+            retorno = SUCESSO;
+        }
+    }
 
     return retorno;
 }

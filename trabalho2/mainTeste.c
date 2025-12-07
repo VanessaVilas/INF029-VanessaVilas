@@ -21,9 +21,9 @@ int main()
     testeInserirSemNada();
     testeCriarEstrutura();
     testeInserirComEstrutura();
-    //testeExcluir();
-    //testeExcluirNumeroEspecifico();
-    //testeListar();
+    testeExcluir();
+    testeExcluirNumeroEspecifico();
+    testeListar();
     //testeRetornarTodosNumeros();
     //testeMudarTamanhoEstrutura();
     //testeListaEncadeada();*/
