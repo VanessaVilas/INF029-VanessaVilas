@@ -255,7 +255,27 @@ int getDadosOrdenadosEstruturaAuxiliar(int posicao, int vetorAux[])
 {
 
     int retorno = 0;
+    retorno = ehPosicaoValida(posicao);
 
+    if(retorno != POSICAO_INVALIDA){
+        VetorAux *aux = &vetorPrincipal[posicao - 1];
+
+        if(aux->vetor == NULL)
+            retorno = SEM_ESTRUTURA_AUXILIAR;
+        else{
+            for(int i = 0; i < aux->qtdElem; i++)
+                vetorAux[i] = aux->vetor[i];
+
+            for(int i = 0; i < (aux->qtdElem - 1); i++)
+                if(vetorAux[i] > vetorAux[i + 1]){
+                    int copia = vetorAux[i];
+                    vetorAux[i] = vetorAux[i + 1];
+                    vetorAux[i + 1] = copia;
+                }
+
+            retorno = SUCESSO;
+        }
+    }
     
     return retorno;
 }

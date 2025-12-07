@@ -18,11 +18,11 @@ void testeListaEncadeada();
 int main()
 {
     //inicializar();
-    testeInserirSemNada();
-    testeCriarEstrutura();
-    testeInserirComEstrutura();
-    testeExcluir();
-    testeExcluirNumeroEspecifico();
+    //testeInserirSemNada();
+    //testeCriarEstrutura();
+    //testeInserirComEstrutura();
+    //testeExcluir();
+    //testeExcluirNumeroEspecifico();
     testeListar();
     //testeRetornarTodosNumeros();
     //testeMudarTamanhoEstrutura();
