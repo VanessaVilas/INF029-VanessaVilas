@@ -265,13 +265,14 @@ int getDadosOrdenadosEstruturaAuxiliar(int posicao, int vetorAux[])
         else{
             for(int i = 0; i < aux->qtdElem; i++)
                 vetorAux[i] = aux->vetor[i];
-
+            
             for(int i = 0; i < (aux->qtdElem - 1); i++)
-                if(vetorAux[i] > vetorAux[i + 1]){
-                    int copia = vetorAux[i];
-                    vetorAux[i] = vetorAux[i + 1];
-                    vetorAux[i + 1] = copia;
-                }
+                for(int j = 0; j < ((aux->qtdElem - 1) - i); j++)
+                    if(vetorAux[j] > vetorAux[j + 1]){
+                        int copia = vetorAux[j];
+                        vetorAux[j] = vetorAux[j + 1];
+                        vetorAux[j + 1] = copia;
+                    }
 
             retorno = SUCESSO;
         }
@@ -290,8 +291,31 @@ Rertono (int)
 */
 int getDadosDeTodasEstruturasAuxiliares(int vetorAux[])
 {
-
     int retorno = 0;
+
+    int vazio = 1;
+    for(int i = 0; i < TAM; i++)
+        if(vetorPrincipal[i].vetor != NULL && vetorPrincipal[i].qtdElem > 0)
+            vazio = 0;
+    
+    if(vazio)
+        retorno = TODAS_ESTRUTURAS_AUXILIARES_VAZIAS;
+    else{
+        int posicao = 0;
+
+        for(int i = 0; i < TAM; i++)
+            if(vetorPrincipal[i].vetor != NULL && vetorPrincipal[i].qtdElem > 0){
+                VetorAux *aux = &vetorPrincipal[i];
+
+                for(int j = 0; j < aux->qtdElem; j++){
+                    vetorAux[posicao] = aux->vetor[j];
+                    posicao++;
+                }
+            }
+        
+        retorno = SUCESSO;
+    }
+
     return retorno;
 }
 
@@ -305,8 +329,39 @@ Rertono (int)
 */
 int getDadosOrdenadosDeTodasEstruturasAuxiliares(int vetorAux[])
 {
-
     int retorno = 0;
+
+    int vazio = 1;
+    for(int i = 0; i < TAM; i++)
+        if(vetorPrincipal[i].vetor != NULL && vetorPrincipal[i].qtdElem > 0)
+            vazio = 0;
+    
+    if(vazio)
+        retorno = TODAS_ESTRUTURAS_AUXILIARES_VAZIAS;
+    else{
+        int tam = 0;
+
+        for(int i = 0; i < TAM; i++)
+            if(vetorPrincipal[i].vetor != NULL && vetorPrincipal[i].qtdElem > 0){
+                VetorAux *aux = &vetorPrincipal[i];
+
+                for(int j = 0; j < aux->qtdElem; j++){
+                    vetorAux[tam] = aux->vetor[j];
+                    tam++;
+                }
+            }
+ 
+        for(int i = 0; i < (tam - 1); i++)
+            for(int j = 0; j < ((tam - 1) - i); j++)
+                if(vetorAux[j] > vetorAux[j + 1]){
+                    int copia = vetorAux[j];
+                    vetorAux[j] = vetorAux[j + 1];
+                    vetorAux[j + 1] = copia;
+                }
+        
+        retorno = SUCESSO;
+    }
+
     return retorno;
 }
 
