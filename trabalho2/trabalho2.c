@@ -10,7 +10,7 @@ typedef struct VetorAux {
     int qtdElem;
 } VetorAux;
 
-VetorAux vetorPrincipal[TAM] = {0};
+VetorAux vetorPrincipal[TAM];
 
 /*
 Objetivo: criar estrutura auxiliar na posição 'posicao'.
@@ -452,8 +452,35 @@ Retorno (No*)
 */
 No *montarListaEncadeadaComCabecote()
 {
+    int vazio = 1;
+    for(int i = 0; i < TAM; i++)
+        if(vetorPrincipal[i].vetor != NULL && vetorPrincipal[i].qtdElem > 0)
+            vazio = 0;
+    
+    if(vazio)
+        return NULL;
+    else{
+        No *cabecote = malloc(sizeof(No));
+        cabecote->prox = NULL;
 
-    return NULL;
+        No *atual = cabecote;
+
+        for(int i = 0; i < TAM; i++)
+            if(vetorPrincipal[i].vetor != NULL && vetorPrincipal[i].qtdElem > 0){
+                VetorAux *aux =  &vetorPrincipal[i];
+
+                for(int j = 0; j < aux->qtdElem; j++){
+                    No *novo = malloc(sizeof(No));
+                    novo->conteudo = aux->vetor[j];
+                    novo->prox = NULL;
+
+                    atual->prox = novo;
+                    atual = novo;
+                }
+            }
+
+        return cabecote;
+    }
 }
 
 /*
@@ -462,9 +489,17 @@ Retorno void
 */
 void getDadosListaEncadeadaComCabecote(No *inicio, int vetorAux[])
 {
+    No *atual = inicio->prox;
+    int i = 0;
+
+    while(atual != NULL){
+        vetorAux[i] = atual->conteudo;
+        atual = atual->prox;
+        i++;
+    }
 }
 
-/*
+/*  
 Objetivo: Destruir a lista encadeada com cabeçote a partir de início.
 O ponteiro inicio deve ficar com NULL.
 
@@ -473,6 +508,16 @@ Retorno
 */
 void destruirListaEncadeadaComCabecote(No **inicio)
 {
+    No *atual = *inicio;
+    No *prox;
+
+    while(atual != NULL){
+        prox = atual->prox;
+        free(atual);
+        atual = prox;
+    }
+
+    *inicio = NULL;
 }
 
 /*
@@ -482,6 +527,11 @@ Objetivo: inicializa o programa. deve ser chamado ao inicio do programa
 
 void inicializar()
 {
+    for(int i = 0; i < TAM; i++){
+        vetorPrincipal[i].vetor = NULL;
+        vetorPrincipal[i].qtdElem = 0;
+        vetorPrincipal[i].tamanho = 0;
+    }
 }
 
 /*
@@ -492,4 +542,10 @@ para poder liberar todos os espaços de memória das estruturas auxiliares.
 
 void finalizar()
 {
+    for(int i = 0; i < TAM; i++)
+        if(vetorPrincipal[i].vetor != NULL){
+            free(vetorPrincipal[i].vetor);
+            vetorPrincipal[i].qtdElem = 0;
+            vetorPrincipal[i].tamanho = 0;
+        }
 }
